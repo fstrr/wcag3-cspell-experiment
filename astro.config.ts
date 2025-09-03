@@ -1,26 +1,21 @@
 import { defineConfig } from "astro/config";
 import node from "@astrojs/node";
 import { parseFrontmatter } from "@astrojs/markdown-remark";
-import { load } from "cheerio";
 import fg from "fast-glob";
 import difference from "lodash-es/difference";
 import { remarkDefinitionList, defListHastHandlers } from "remark-definition-list";
 import remarkDirective from "remark-directive";
 
-import { readFile, writeFile } from "fs/promises";
+import { readFile } from "fs/promises";
 import { basename, dirname, join } from "path";
-import { fileURLToPath } from "url";
 
 import { guidelinesRehypePlugins, guidelinesRemarkPlugins } from "./src/lib/markdown/guidelines";
-
-const GH_REPO = process.env.GITHUB_REPOSITORY; // Only set during GitHub action
 
 // https://astro.build/config
 export default defineConfig({
   adapter: node({
     mode: "standalone",
   }),
-  base: `${GH_REPO ? GH_REPO.slice(GH_REPO.indexOf("/")) : ""}/`,
   devToolbar: { enabled: false },
   trailingSlash: "always",
   markdown: {
@@ -99,36 +94,6 @@ export default defineConfig({
               );
             }
           }
-        },
-      },
-    },
-    {
-      /** Filters output to reduce diff noise, esp. due to script/style/dependency updates */
-      name: "diffable-html",
-      hooks: {
-        "astro:build:done": async ({ dir }) => {
-          if (!process.env.WCAG_DIFFABLE) return;
-          const distPath = fileURLToPath(dir);
-          const htmlPaths = await fg.glob("**/*.html", { cwd: distPath });
-          const start = Date.now();
-          for (const path of htmlPaths) {
-            const filePath = join(distPath, path);
-            const $ = load(await readFile(filePath));
-            const assetPattern = /(\/_astro\/.*)\.[\w-]+_[\w-]+(\.[0-9a-z]+\b)/gi;
-
-            $("meta[name='generator'], link, script, style").remove();
-            $("*").each((_, el) => {
-              if (!("attribs" in el)) return;
-              for (const attr of Object.keys(el.attribs)) {
-                if (attr.startsWith("data-astro-cid")) delete el.attribs[attr];
-              }
-              if (el.attribs.src) el.attribs.src = el.attribs.src.replace(assetPattern, "$1$2");
-              if (el.attribs.srcset)
-                el.attribs.srcset = el.attribs.srcset.replace(assetPattern, "$1$2");
-            });
-            await writeFile(filePath, $.html());
-          }
-          console.log(`Diffable plugin completed in ${Date.now() - start}ms`);
         },
       },
     },

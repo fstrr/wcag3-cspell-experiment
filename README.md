@@ -309,14 +309,6 @@ create a Markdown file under `terms`, then populate its content and any applicab
 
 ## Environment Variables
 
-### `WCAG_DIFFABLE`
-
-When set, filters build output to reduce noise when diffing output between changes.
-This is for maintenance purposes only, to catch regressions;
-built code is not expected to run properly when this is active!
-
-**Default:** Unset (set to any non-empty value to enable)
-
 ### `WCAG_SKIP_WIP`
 
 When set, excludes requirements/assertions that have `needsAdditionalResearch` set to `true`,

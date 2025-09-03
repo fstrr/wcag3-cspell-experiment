@@ -1,4 +1,3 @@
-const { EleventyHtmlBasePlugin } = require("@11ty/eleventy");
 const { access } = require("fs/promises");
 const { dirname } = require("path");
 const listOutcomes = require("./build/list-outcomes");
@@ -37,9 +36,6 @@ module.exports = function (eleventyConfig) {
       };
     }
   })
-
-  // Make it easy to deploy to gh-pages
-  eleventyConfig.addPlugin(EleventyHtmlBasePlugin);
 
   // Copy `assets/` to `_site/assets`
   eleventyConfig.addPassthroughCopy("assets");

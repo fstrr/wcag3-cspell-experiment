@@ -1,0 +1,27 @@
+name: Spell Check
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  spellcheck:
+    runs-on: ubuntu-latest
+    name: Spell Check
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Spell Check with CSpell
+      uses: streetsidesoftware/cspell-action@v6
+      with:
+        # Check all markdown files in guidelines folder
+        files: "guidelines/**/*.md"
+        # Use strict mode to fail on spelling errors
+        strict: true
+        # Incremental files only (only check changed files in PRs)
+        incremental_files_only: false
+        # Use the configuration file
+        config: ".cspellrc.json"

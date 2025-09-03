@@ -1,0 +1,87 @@
+{
+  "version": "0.2",
+  "language": "en",
+  "words": [],
+  "ignorePaths": [
+    "node_modules/**",
+    ".git/**",
+    "dist/**",
+    "build/**",
+    "*.log",
+    "package-lock.json",
+    "*.min.js",
+    "*.min.css"
+  ],
+  "overrides": [
+    {
+      "filename": "**/*.md",
+      "language": "en",
+      "dictionaries": [
+        "en",
+        "companies",
+        "softwareTerms",
+        "typescript",
+        "html",
+        "css",
+        "npm"
+      ]
+    },
+    {
+      "filename": "**/*.json",
+      "language": "en",
+      "dictionaries": [
+        "en",
+        "softwareTerms",
+        "typescript",
+        "npm"
+      ]
+    }
+  ],
+  "dictionaries": [
+    "en",
+    "companies",
+    "softwareTerms",
+    "typescript",
+    "html",
+    "css",
+    "npm"
+  ],
+  "dictionaryDefinitions": [
+    {
+      "name": "custom-words",
+      "path": "./.cspell/custom-words.txt",
+      "addWords": true
+    }
+  ],
+  "import": [],
+  "flagWords": [],
+  "allowCompoundWords": true,
+  "ignoreCaseChanges": true,
+  "patterns": [
+    {
+      "name": "markdown-code",
+      "pattern": "/`[^`]*`/g"
+    },
+    {
+      "name": "markdown-links",
+      "pattern": "/\\[([^\\]]+)\\]\\([^)]+\\)/g"
+    },
+    {
+      "name": "html-tags",
+      "pattern": "/<[^>]*>/g"
+    },
+    {
+      "name": "urls",
+      "pattern": "/https?:\\/\\/[^\\s]+/g"
+    }
+  ],
+  "ignoreRegExpList": [
+    "/\\b[A-Z]{2,}\\b/g",
+    "/\\b\\d+(\\.\\d+)*\\b/g",
+    "/\\b[a-z]+([A-Z][a-z]*)+\\b/g",
+    "markdown-code",
+    "markdown-links", 
+    "html-tags",
+    "urls"
+  ]
+}
